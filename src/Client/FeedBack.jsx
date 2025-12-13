@@ -348,7 +348,7 @@ const FeedBack = () => {
       )}
 
       <div className='flex w-full items-start justify-center flex-col md:flex-row gap-5 mt-10 px-5'>
-        <div className='flex-1 max-h-[80vh] overflow-y-auto scrollbar-none md:scrollbar-hide p-5'>
+        <div className='flex-1 max-h-screen overflow-y-auto scrollbar-none md:scrollbar-hide p-5'>
           <form
             className='flex rounded-lg shadow-lg h-auto flex-col w-full max-w-md items-center'
             onSubmit={handleSubmit}
