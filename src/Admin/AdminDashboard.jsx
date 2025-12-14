@@ -2,27 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { LuMessageCircleMore } from "react-icons/lu";
 import { FaRegStar, FaThumbsUp, FaRegSmile } from "react-icons/fa";
 import AdminNavBar from './AdminNavBar';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement,
-} from 'chart.js';
-import { Bar, Doughnut, Pie } from 'react-chartjs-2';
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement
-);
+import { Pie } from 'react-chartjs-2';
+import Footer from '../components/Footer';
 
 const AdminDashboard = () => {
   const [feedbacks, setFeedbacks] = useState([]);
@@ -37,9 +18,9 @@ const AdminDashboard = () => {
     fetch('http://127.0.0.1:5555/feedbacks')
       .then(res => res.json())
       .then(data => {
-        setFeedbacks(data);
+        setFeedbacks(data || []);
 
-        const total = data.length;
+        const total = data?.length || 0;
 
         const averageRating =
           total > 0
@@ -66,26 +47,15 @@ const AdminDashboard = () => {
       .catch(err => console.error('Error fetching feedbacks:', err));
   }, []);
 
-  // Chart data
-  const barData = {
-    labels: feedbacks.map(fb => fb.event),
-    datasets: [
-      {
-        label: 'Overall Rating',
-        data: feedbacks.map(fb => fb.rating_overall),
-        backgroundColor: 'rgba(14, 165, 233, 0.6)',
-      },
-    ],
-  };
-
+  // Pie chart data
   const pieData = {
     labels: ['Recommend Yes', 'Recommend No'],
     datasets: [
       {
         label: 'Recommendation',
         data: [
-          feedbacks.filter(fb => fb.recommend === "yes").length,
-          feedbacks.filter(fb => fb.recommend === "no").length
+          feedbacks?.filter(fb => fb.recommend === "yes").length || 0,
+          feedbacks?.filter(fb => fb.recommend === "no").length || 0
         ],
         backgroundColor: ['#22c55e', '#f87171'],
         hoverOffset: 8
@@ -93,33 +63,18 @@ const AdminDashboard = () => {
     ],
   };
 
-  const doughnutData = {
-    labels: ['Positive (>=4★)', 'Neutral (<4★)'],
-    datasets: [
-      {
-        label: 'Sentiment',
-        data: [
-          feedbacks.filter(fb => fb.rating_overall >= 4).length,
-          feedbacks.filter(fb => fb.rating_overall < 4).length
-        ],
-        backgroundColor: ['#06b6d4', '#facc15'],
-        hoverOffset: 8
-      }
-    ]
-  };
-
   return (
     <div className='flex h-screen w-full'>
-      {/* Fixed Navbar */}
-      <div className='fixed h-[480px] top-0 left-0 w-50 mt-15 ml-5 rounded-lg shadow-md overflow-y-auto'>
-        <AdminNavBar /> 
+      {/* Sidebar */}
+      <div className='fixed h-[530px] top-0 left-0 w-[200px] mt-4 ml-5 rounded-lg shadow-md overflow-y-auto'>
+        <AdminNavBar />
       </div>
 
       {/* Main content */}
       <div className='ml-[245px] flex flex-col w-full items-center justify-start overflow-y-auto pt-7'>
 
         {/* Page Header */}
-        <div className='flex w-[950px] bg-linear-to-r p-3 from-cyan-400 to-teal-600 h-[200px] mb-10 rounded-xl flex-col items-center justify-center'>
+        <div className='flex w-[950px] bg-gradient-to-r from-cyan-400 to-teal-600 p-3 h-[200px] mb-10 rounded-xl flex-col items-center justify-center'>
           <h1 className='text-white text-2xl font-bold text-center'>
             Feedback Analytics
           </h1>
@@ -136,8 +91,8 @@ const AdminDashboard = () => {
           <Card icon={<FaRegSmile size={20} color='white' />} value={metrics.totalFeedbacks} label="Total Feedbacks" />
         </div>
 
-        {/* Charts + Table Grid */}
-        <div className='grid grid-cols-2 gap-5 mt-10 w-[950px] '>
+        {/* Pie Chart + Feedback Table */}
+        <div className='grid grid-cols-2 gap-5 mt-10 w-[950px]'>
 
           {/* Left Column: Pie Chart */}
           <div className='shadow-md p-5 rounded-lg flex flex-col items-center'>
@@ -146,9 +101,9 @@ const AdminDashboard = () => {
           </div>
 
           {/* Right Column: Feedback Table */}
-          <div className='shadow-md w-full rounded-lg  overflow-x-auto max-h-[700px]'>
+          <div className='shadow-md w-full rounded-lg overflow-x-auto max-h-[700px]'>
             <table className='min-w-full divide-y divide-gray-200'>
-              <thead className='bg-linear-to-r from-teal-600 to-cyan-500 text-white sticky top-0'>
+              <thead className='bg-gradient-to-r from-teal-600 to-cyan-500 text-white sticky top-0'>
                 <tr>
                   <th className='px-6 py-3 text-left text-[10px] font-medium uppercase tracking-wider'>Index</th>
                   <th className='px-6 py-3 text-left text-[10px] font-medium uppercase tracking-wider'>Name</th>
@@ -159,8 +114,8 @@ const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody className='bg-white divide-y divide-gray-200'>
-                {feedbacks.map((fb, index) => (
-                  <tr key={fb.id} className='hover:bg-gray-100'>
+                {feedbacks?.map((fb, index) => (
+                  <tr key={fb.id || index} className='hover:bg-gray-100'>
                     <td className='px-6 text-[11px] py-4 whitespace-nowrap'>{index + 1}</td>
                     <td className='px-6 text-[11px] py-4 whitespace-nowrap'>{fb.name || "Anonymous"}</td>
                     <td className='px-6 text-[11px] py-4 whitespace-nowrap'>{fb.event}</td>
@@ -168,39 +123,28 @@ const AdminDashboard = () => {
                     <td className='px-6 text-[11px] py-4 whitespace-nowrap'>{fb.recommend}</td>
                     <td className='px-6 text-[11px] py-4 whitespace-nowrap'>{fb.comments || "-"}</td>
                   </tr>
-                ))}
+                )) || <tr><td colSpan={6} className='text-center py-4'>No feedbacks available</td></tr>}
               </tbody>
             </table>
           </div>
         </div>
 
-        {/* Other Charts: Bar + Doughnut */}
-        <div className='grid grid-cols-2 gap-5 mt-10 mb-6 w-[950px]'>
-          <div className='shadow-md p-5 rounded-lg'>
-            <h2 className='text-gray-700 font-semibold mb-3 text-center'>Bar Chart: Event Ratings</h2>
-            <Bar data={barData} height={200} />
-          </div>
-
-          <div className='shadow-md p-5 rounded-lg'>
-            <h2 className='text-gray-700 font-semibold mb-3 text-center'>Doughnut Chart: Sentiment</h2>
-            <Doughnut data={doughnutData} height={200} />
-          </div>
-        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 // Reusable Card Component
 const Card = ({ icon, value, label }) => (
   <div className='grid grid-cols-3 gap-5 h-[90px] px-5 w-full shadow-md rounded-lg items-center justify-center'>
-    <div className='w-[45px] h-[45px] flex items-center justify-center p-4 rounded-lg font-bold bg-linear-to-r from-teal-600 to-cyan-500'>
+    <div className='w-[45px] h-[45px] flex items-center justify-center p-4 rounded-lg font-bold bg-gradient-to-r from-teal-600 to-cyan-500'>
       {icon}
     </div>
     <div className='flex col-span-2 flex-col'>
       <h2 className='font-bold text-gray-700 text-xl'>{value}</h2>
       <p className='text-gray-600 font-semibold text-[10px] mt-1'>{label}</p>
     </div>
+    
   </div>
 );
 
