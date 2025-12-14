@@ -7,6 +7,7 @@ import AdminLogin from './Admin/AdminLogin'
 import AdminDashboard from './Admin/AdminDashboard'
 import Analytics from './Admin/Analytics'
 import Footer from './components/Footer'
+import Report from './Admin/Report'
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
         <Route path='/admin/dashboard' Component={AdminDashboard} />
         <Route path='/admin/dashboard/analytics' Component={Analytics} />
         <Route path='/footer' Component={Footer} />
+        <Route path='/admin/report' Component={Report} />
 
       </Routes>
      

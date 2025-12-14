@@ -1,16 +1,41 @@
-# React + Vite
+# Feedback Hub
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Feedback Hub is a modern web-based platform designed to streamline the process of collecting, analyzing, and visualizing guest feedback for events. It replaces outdated paper and QR code methods with an intuitive digital solution, enabling both guests and management to engage efficiently.
 
-Currently, two official plugins are available:
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Future Improvements](#future-improvements)
+- [License](#license)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Overview
+The main goal of Feedback Hub is to provide a seamless and effective way to capture event feedback digitally. The platform focuses on:
+1. Designing and developing a web-based Feedback Hub for collecting event feedback.
+2. Providing guests with a simple and quick way to share their opinions.
+3. Replacing outdated paper and QR code methods with a modern digital solution.
+4. Generating detailed reports that help management analyze guest feedback and improve services.
 
-## React Compiler
+## Features
+- **User-Friendly Feedback Form:** Guests can submit feedback quickly and easily.
+- **Analytics Dashboard:** Admins can visualize event ratings, sentiment, and recommendations.
+- **Dynamic Reports:** Generate PDF reports summarizing feedback, insights, and recommendations.
+- **Real-Time Updates:** Data is updated dynamically as new feedback is submitted.
+- **Secure Admin Access:** Only authorized admins can view analytics and reports.
+- **Modern UI/UX:** Responsive, clean, and mobile-friendly interface.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## Technologies Used
+- **Frontend:** React.js, Tailwind CSS, React Router, React Icons
+- **Backend:** Flask (Python), REST APIs
+- **Database:** SQLite (or other SQL databases)
+- **PDF Generation:** `jsPDF`, `html2canvas`
+- **Charts:** Chart.js (Bar, Doughnut, Pie)
+- **Deployment:** Local development / optional cloud deployment (Render, Vercel)
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/feedback-hub.git
+   cd feedback-hub
